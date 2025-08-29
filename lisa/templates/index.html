@@ -1,0 +1,153 @@
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lisa Finances</title>
+</head>
+<body>
+    <div>
+        <h1>Kassada: {{user.balance|intcomma}} so'm</h1>
+    </div>
+    <h1 id="alert">Kirim-Chiqim</h1>
+    <form method="post" class="main-div">
+        {% csrf_token %}
+        <label for="">Summani kiriting</label>
+        <input type="number" name="amount" id="amount" min="100" max="10000000">
+        <textarea name="description">Izoh yo‘q</textarea>
+        <select name="type" id="action">
+            <option value="kirim">Kirim</option>
+            <option value="chiqim">Chiqim</option>
+        </select>
+        <select name="category" id="action">
+            {% for i in categories %}
+                <option value="{{i.id}}">{{i.name}}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" id="btn" onclick="save(event)" disabled>Saqlash</button>
+    </form>
+    <a href="{% url 'reports' %}">Hisobotlar</a>
+    
+</body>
+</html>
+
+<style>
+    *{
+        border:0;
+        margin:0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body{
+        background-color: rgb(12, 12, 12);
+        padding: 10px;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap:30px;
+    }
+    .main-div{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap:20px;
+        border:3px solid white;
+        padding: 20px;
+        border-radius: 13px;
+        font-size: 25px;
+        width: 30%;
+        box-shadow: 10px 10px 0 0 rgb(194, 194, 194);
+    }
+    input{
+        font-size: 25px;
+        border-radius: 5px;
+        padding: 5px;
+        width: 100%;
+        background-color: rgb(219, 219, 219);
+        border:2px solid white;
+    }
+    textarea{
+        width: 100%;
+        border-radius: 5px;
+        background-color: rgb(219, 219, 219);
+        border:2px solid white;
+    }
+    select{
+        font-size: 25px;
+        background-color: rgb(219, 219, 219);
+        border:2px solid white;
+        width: 100%;
+        border-radius: 5px;
+    }
+    button{
+        font-size: 25px;
+        border-radius: 5px;
+        background-color: rgb(219, 219, 219);
+        border:2px solid white;
+        width: 100%;
+    }
+    #alert{
+        background-color: rgb(0, 182, 0);
+        padding: 5px;
+        border-radius: 5px;
+        border: 2px solid rgb(0, 128, 0);
+        z-index: 1000;
+        position: fixed;
+        display: none;
+    }
+    a{
+        color: white;
+        text-decoration: none;
+        border:2px solid white;
+        padding: 5px;
+        font-size: 25px;
+        border-radius: 12px;
+    }
+    @media screen and (max-width:800px){
+        .main-div{
+            width: 80%;
+        }
+    }
+</style>
+
+<script>
+    let amount = document.getElementById("amount")
+    let btn = document.getElementById("btn")
+    let alerto = document.getElementById("alert")
+    let actioner = document.getElementById("action")
+
+    amount.addEventListener("input", function(){
+        if (amount.value > 100 && amount.value < 10000000){
+            btn.disabled = false
+        } else {
+            btn.disabled = true
+        }
+    })
+
+    function alerter(){
+        if (actioner.value=="kirim"){
+            alerto.textContent = `Kirim +${amount.value} so'm`
+        } else if (actioner.value=="chiqim"){
+            alerto.textContent = `Chiqim -${amount.value} so'm`
+            alerto.style.backgroundColor = 'red'
+            alerto.style.border = 'red'
+        }
+        alerto.style.display = 'block'
+        setTimeout(function(){
+             alerto.style.display = 'none'
+        },3000)
+    }
+
+    function save(event){
+        event.preventDefault();
+        alerter();
+        setTimeout(function(){
+            document.querySelector('form').submit()
+        },1000)
+    }
+
+
+</script>

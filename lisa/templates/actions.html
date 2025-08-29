@@ -1,0 +1,90 @@
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lisa Finances</title>
+</head>
+<body>
+    <div>
+        <h1>Kassada: {{user.balance|intcomma}} so'm</h1>
+    </div>
+    <a href="{% url 'home' %}">Menyu</a>
+    <div class="main-div">
+        {% for i in reports %}
+            {% if i.type == 'kirim' %}
+                <div class="item">
+                    <h1 style="background-color: rgb(3, 212, 3);">{{i.type}}</h1>
+                    <h2>Izoh: {{i.description}}</h2>
+                    <h2>Summa: {{i.amount|intcomma}} so'm</h2>
+                    <h3>Vaqt: {{i.created_at}}</h3>
+                </div>
+            {% elif i.type == 'chiqim'%}
+                <div class="item">
+                    <h1 style="background-color: red">{{i.type}}</h1>
+                    <h2>Izoh: {{i.description}}</h2>
+                    <h2>Summa: {{i.amount|intcomma}} so'm</h2>
+                    <h3>Vaqt: {{i.created_at}}</h3>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <a href="{% url 'home' %}">Menyu</a>
+    
+</body>
+</html>
+
+<style>
+    *{
+        border:0;
+        margin:0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body{
+        background-color: rgb(12, 12, 12);
+        padding: 10px;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap:30px;
+    }
+    .main-div{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap:20px;
+        border:1px solid white;
+        padding: 20px;
+        border-radius: 13px;
+    }
+    input{
+        font-size: 25px;
+        border-radius: 13px;
+        padding: 5px;
+    }
+    select{
+        font-size: 25px;
+    }
+    button{
+        font-size: 25px;
+        border-radius: 5px;
+    }
+    .item{
+        border: 2px solid white;
+        padding: 5px;
+        border-left: 4px solid rgb(0, 187, 0);
+        box-shadow: 5px 5px 0 0 rgb(139, 139, 139);
+    }
+    a{
+        color: white;
+        text-decoration: none;
+        border:2px solid white;
+        padding: 5px;
+        font-size: 25px;
+        border-radius: 12px;
+    }
+</style>
